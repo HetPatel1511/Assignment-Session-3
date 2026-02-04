@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProductListItem from '../components/ProductListItem'
 import StatsCard from '../components/StatsCard';
 import ErrorCard from '../components/ErrorCard';
@@ -47,7 +47,7 @@ function Products() {
   }, [])
 
   useEffect(() => {
-    setSearchParams({ search: search && search, filter });
+    setSearchParams({ search: search, filter });
   }, [search, filter])
 
   const handleSearch = (e: any) => {
@@ -99,9 +99,9 @@ function Products() {
               >
                 <option>All</option>
                 {
-                  productsCategory && productsCategory.map((a: any, index: any) =>
-                    <option key={index}>{a}</option>
-                  )
+                  productsCategory ? productsCategory.map((a: any, index: any) =>
+                    <option key={a}>{a}</option>
+                  ) : <></>
                 }
               </select>
               <svg
@@ -127,13 +127,26 @@ function Products() {
           :
           productsError ?
             <ErrorCard errorMessage={productsError.message} />
-            :
-            products.length <= 0 ?
+            : <DisplayProducts products={products} theme={theme} />
+            
+      }
+    </>
+  )
+}
+
+function calcuateTotalInventory(products: any) {
+  return products.length > 0 ? products.reduce((acc: number, product: any) => acc + product.stock, 0) : 0
+}
+function calcuateTotalInventoryValue(products: any) {
+  return products.length > 0 ? products.reduce((acc: number, product: any) => acc + product.stock, 0) : 0
+}
+
+function DisplayProducts({products, theme}: {products: any, theme: string}) {
+  return products.length <= 0 ?
               <ErrorCard errorMessage={"No Products found"} />
               :
               <>
                 <h1 className={`${theme == "light" ? "text-black" : "text-gray-300"} text-4xl ml-8 font-bold ml-2`}>Products</h1>
-
                 <div className="grid lg:grid-cols-4 gap-4 md:grid-cols-2 mt-4 mx-8">
                   {
                     products.map((product: any) => {
@@ -141,20 +154,16 @@ function Products() {
                     })
                   }
                 </div>
-
                 <div className='bg-gray-300 mt-8 py-4'>
                   <h1 className='text-4xl mx-8 font-bold' >Inventory Stats</h1>
                   <div className='grid md:grid-cols-3 gap-4 sm:grid-cols-1 mt-4 pb-4 mx-8'>
                     <StatsCard title='Total Products' body={`${products.length}`} />
-                    <StatsCard title='Total Inventory' body={`${products.length > 0 ? products.reduce((acc: number, product: any) => acc + product.stock, 0) : 0}`} />
-                    <StatsCard title='Total Inventory value' body={`${products.length > 0 ? products.reduce((acc: number, product: any) => acc + (product.stock * product.price), 0) : 0}`} />
+                    <StatsCard title='Total Inventory' body={`${calcuateTotalInventory(products)}`} />
+                    <StatsCard title='Total Inventory value' body={`${calcuateTotalInventoryValue(products)}`} />
                   </div>
                 </div>
                 <Outlet />
               </>
-      }
-    </>
-  )
 }
 
 export default Products

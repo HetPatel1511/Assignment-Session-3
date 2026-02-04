@@ -1,11 +1,9 @@
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeTheme, selectTheme } from '../redux/slices/themeSlice'
 import { totalItemsInCart } from '../redux/slices/cartSlice'
 
-const Navbar = ({
-}: {
-  }) => {
+const Navbar = () => {
   const dispatch = useDispatch()
   const theme = useSelector(selectTheme)
   

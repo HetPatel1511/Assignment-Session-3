@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState, type Ref } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import TextInput from '../components/TextInput'
 import { selectCart, totalCost, totalItemsInCart } from '../redux/slices/cartSlice'
 import { useSelector } from 'react-redux'
@@ -60,7 +60,7 @@ const Checkout = () => {
                             <TextInput name="coupon" labelText='Coupon' value={coupon} type='number' error={couponError} onChange={handleCouponChange} ref={couponInputRef} />
                             <button className='rounded bg-blue-600 px-4 text-white py-2 cursor-pointer' onClick={applyCoupon}>Apply Coupon</button>
                         </div>
-                        : <p className='text-xl text-blue-500 cursor-pointer' onClick={() => setHasCoupon(true)}> Have a Coupon? </p>
+                        : <button className='text-xl text-blue-500 cursor-pointer' onClick={() => setHasCoupon(true)}> Have a Coupon? </button>
                     }
                     <div className="max-w-full rounded overflow-hidden shadow-lg my-4 bg-gray-700">
                         <div className="grid sm:grid-cols-2 px-6 py-4 text-white">
